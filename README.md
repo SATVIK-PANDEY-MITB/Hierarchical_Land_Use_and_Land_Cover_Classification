@@ -1,8 +1,8 @@
-# Land Use and Land Cover Classification of Southern India
+# Hierarchical LULC Classification of Southern India Using Landsat 8 and EfficientNetB0
 
 ## 1. Overview
 
-This research project compares traditional machine learning and deep learning approaches for land use and land cover (LULC) classification across Southern India. The study uses multi-spectral Landsat 8 imagery and ESA WorldCover v200 reference labels.
+This research project compares traditional machine learning and deep learning approaches for hierarchical land use and land cover (LULC) classification across Southern India. The study uses multi-spectral Landsat 8 imagery and ESA WorldCover v200 reference labels.
 
 The project implements:
 
@@ -368,7 +368,7 @@ The proposed pipeline uses a 114-channel pixel-level feature representation comp
 
 - 13 raw spectral bands,
 - 10 spectral indices, and
-- localized neighborhood statistics calculated with 15×15 sliding windows.
+- localized neighborhood statistics calculated with 15ï¿½15 sliding windows.
 
 The hierarchical Random Forest + Multi-Layer Perceptron configuration achieved an overall accuracy of **0.85** and a macro F1-score of **0.64**. This represents a **22 percentage-point improvement in overall accuracy** over the corresponding flat Random Forest baseline. The hierarchical framework also demonstrated improved minority-class performance and reduced class confusion.
 
@@ -388,10 +388,10 @@ The paper evaluates four geographic regions:
 
 | Region | Approximate location |
 | --- | --- |
-| North India | 30°N–33°N, 75°E–78°E |
-| South India | 9°N–12°N, 78°E–81°E |
-| West India | 21°N–24°N, 69°E–72°E |
-| East India | 18°N–21°N, 84°E–87°E |
+| North India | 30ï¿½Nï¿½33ï¿½N, 75ï¿½Eï¿½78ï¿½E |
+| South India | 9ï¿½Nï¿½12ï¿½N, 78ï¿½Eï¿½81ï¿½E |
+| West India | 21ï¿½Nï¿½24ï¿½N, 69ï¿½Eï¿½72ï¿½E |
+| East India | 18ï¿½Nï¿½21ï¿½N, 84ï¿½Eï¿½87ï¿½E |
 
 The primary dataset also includes areas in Punjab, Tamil Nadu, Odisha, Gujarat, Madhya Pradesh, Chhattisgarh, and other selected Indian regions.
 
@@ -404,7 +404,7 @@ The primary dataset also includes areas in Punjab, Tamil Nadu, Odisha, Gujarat, 
 | ESA WorldCover v200 | 10 m | Reference labels |
 | EuroSAT RGB benchmark | 10 m | Deep-learning baseline comparison |
 
-The Sentinel-2A bands include B01–B07, B8A, B11, and B12, together with the Scene Classification Layer. The raw values were scaled by 10,000 before normalization.
+The Sentinel-2A bands include B01ï¿½B07, B8A, B11, and B12, together with the Scene Classification Layer. The raw values were scaled by 10,000 before normalization.
 
 ## 7. Feature Engineering
 
@@ -425,7 +425,7 @@ The paper uses the following indices:
 
 ### 7.2 Spatial Features
 
-A 15×15 neighborhood was processed with depth-wise convolution in TensorFlow. For every pixel, the pipeline extracted:
+A 15ï¿½15 neighborhood was processed with depth-wise convolution in TensorFlow. For every pixel, the pipeline extracted:
 
 - Local mean,
 - Local standard deviation,
@@ -461,7 +461,7 @@ The original WorldCover labels are mapped into the following 10 classes:
 | 8 | 95 | Mangroves |
 | 9 | 100 | Moss/Lichen |
 
-The paper’s hierarchical grouping is:
+The paperï¿½s hierarchical grouping is:
 
 | Coarse group | WorldCover classes |
 | --- | --- |
@@ -503,8 +503,8 @@ All models were trained with TensorFlow 2.15 and Scikit-Learn. The Random Forest
 
 | Component | Configuration |
 | --- | --- |
-| CNN | Conv2D(32, 3×3), MaxPool, Conv2D(64, 3×3), MaxPool, Dense(64), Softmax(10) |
-| Image size | 64×64 pixels |
+| CNN | Conv2D(32, 3ï¿½3), MaxPool, Conv2D(64, 3ï¿½3), MaxPool, Dense(64), Softmax(10) |
+| Image size | 64ï¿½64 pixels |
 | EfficientNetB0 | ImageNet-pretrained; fine-tuned classification head |
 | MLP | Dense(128), Dense(64), ReLU, Dropout(0.5), Batch Normalization |
 | ResNet-MLP | Dense(64)-Dense(128)-Dense(64)-Dense(64) with residual connections |
@@ -548,7 +548,7 @@ Pixels with a maximum probability below 0.7 are flagged as uncertain and assigne
 | Random Forest | 0.63 | 0.24 | 0.66 |
 | MLP | 0.53 | 0.36 | 0.52 |
 | Tabular Transformer | 0.54 | 0.34 | 0.54 |
-| Stacking Ensemble | 0.82 | — | 0.78 |
+| Stacking Ensemble | 0.82 | ï¿½ | 0.78 |
 | CNN Baseline | 0.65 | 0.61 | 0.63 |
 | EfficientNetB0 | 0.82 | 0.60 | 0.76 |
 | RF + XGBoost | 0.85 | 0.62 | 0.84 |
@@ -588,10 +588,10 @@ The RF + MLP configuration was evaluated using four feature sets over 10 random 
 
 | feature Set | Macro F1 | Accuracy | ENR |
 | --- | ---: | ---: | ---: |
-| Spectral bands only | 0.461 ± 0.013 | 0.769 ± 0.031 | 0.031 ± 0.004 |
-| Bands + indices | 0.486 ± 0.009 | 0.776 ± 0.017 | 0.030 ± 0.002 |
-| Bands + indices + neighborhood statistics | 0.573 ± 0.007 | 0.856 ± 0.006 | 0.019 ± 0.001 |
-| Final representation + oversampling | **0.627 ± 0.007** | **0.840 ± 0.005** | **0.024 ± 0.001** |
+| Spectral bands only | 0.461 ï¿½ 0.013 | 0.769 ï¿½ 0.031 | 0.031 ï¿½ 0.004 |
+| Bands + indices | 0.486 ï¿½ 0.009 | 0.776 ï¿½ 0.017 | 0.030 ï¿½ 0.002 |
+| Bands + indices + neighborhood statistics | 0.573 ï¿½ 0.007 | 0.856 ï¿½ 0.006 | 0.019 ï¿½ 0.001 |
+| Final representation + oversampling | **0.627 ï¿½ 0.007** | **0.840 ï¿½ 0.005** | **0.024 ï¿½ 0.001** |
 
 The Friedman test found statistically significant differences among all four configurations at $p < 0.001$. Neighborhood statistics produced the largest statistically significant improvement, while oversampling significantly improved macro recall and macro F1-score.
 
@@ -641,10 +641,10 @@ However, the reported high accuracy should be interpreted together with macro F1
 ## 19. Publication-Specific Notes
 
 - The paper uses **Sentinel-2A** for the main methodology and **Landsat 8** for comparative data preparation.
-- The paper’s main public dataset is **ESA WorldCover v200**.
+- The paperï¿½s main public dataset is **ESA WorldCover v200**.
 - The paper uses a 10-class schema, but the final vegetation-specialist experiment removes Moss/Lichen and merges vegetation species into broader groups.
 - Some reported deep-learning results use different labels and class support; they should therefore not be compared directly with the RF + MLP 10-class results.
-- The current project’s notebook uses a Southern India Landsat 8 workflow and therefore represents a related but distinct experimental configuration.
+- The current projectï¿½s notebook uses a Southern India Landsat 8 workflow and therefore represents a related but distinct experimental configuration.
 
 ## 20. Research Reproducibility Checklist
 
@@ -652,7 +652,7 @@ However, the reported high accuracy should be interpreted together with macro F1
 2. Collect ESA WorldCover v200 labels.
 3. Reproject all rasters to a common CRS and spatial grid.
 4. Extract raw bands and spectral indices.
-5. Compute 15×15 neighborhood statistics.
+5. Compute 15ï¿½15 neighborhood statistics.
 6. Create stratified train, validation, and test sets.
 7. Train the flat and hierarchical models with fixed random seeds.
 8. Save class mappings, normalization parameters, and model checkpoints.
@@ -663,7 +663,7 @@ However, the reported high accuracy should be interpreted together with macro F1
 
 ## 21. References
 
-The paper’s bibliography is maintained in the project’s `references.bib` file. The bibliography should be compiled with Biber and BibLaTeX when the LaTeX source is published.
+The paperï¿½s bibliography is maintained in the projectï¿½s `references.bib` file. The bibliography should be compiled with Biber and BibLaTeX when the LaTeX source is published.
 
 ---
 
